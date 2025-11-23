@@ -13,6 +13,7 @@
         <a href="{{ url('/contact') }}"  class="btn btn-primary btn-lg mt-4 animate-fade-in-delayed">Contact Us</a>
     </div>
     
+    
     <!-- Scroll Indicator -->
     <div class="scroll-indicator">
         <div class="mouse">

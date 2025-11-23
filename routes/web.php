@@ -53,6 +53,9 @@ Route::get('/register', function () {
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+// Pastikan route ini ada
+Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout']);
+
 
 // ==================== ADMIN ROUTES ====================
 
