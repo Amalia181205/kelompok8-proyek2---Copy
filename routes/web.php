@@ -2,15 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\SearchController;
-
-Route::get('/search', [SearchController::class, 'search'])->name('search');
-
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\ContactController;
 
-Route::get('/booking/{type}', [BookingController::class, 'show'])->name('booking.show');
-Route::post('/booking', [BookingController::class, 'store'])->name('booking.store');
+// ==================== PUBLIC ROUTES ====================
 
 // Home
 Route::get('/', function () {
@@ -23,31 +20,94 @@ Route::get('/home', function () {
     return redirect('/');
 });
 
-// Pages
-Route::get('/register', [AuthController::class, 'showRegister']);
-Route::post('/register', [AuthController::class, 'register']);
+// Shop & Gallery
+Route::view('/shop', 'konten.shop')->name('shop');
+Route::view('/gallery', 'konten.gallery')->name('gallery');
 
-Route::get('/login', [AuthController::class, 'showLogin']);
-Route::post('/login', [AuthController::class, 'login']);
-
-Route::post('/logout', [AuthController::class, 'logout']);
-
-Route::view('/shop', 'konten.shop');
-Route::view('/gallery', 'konten.gallery');
-Route::view('/contact', 'konten.contact');
-
-use App\Http\Controllers\ContactController;
-
-// Tampilkan form (GET)
-Route::get('/contact/create', [ContactController::class, 'create'])->name('contact.create');
-// Terima form (POST)
+// Contact
+Route::get('/contact', [ContactController::class, 'create'])->name('contact.create');
 Route::post('/contact/store', [ContactController::class, 'store'])->name('contact.store');
 
-//dashboard
-Route::get('/dashboard', function () {
-    $title = 'Dashboard';
-    $slug = 'dashboard';
-    return view('layoutadmin.dashboard', compact('title','slug'));
+// Search
+Route::get('/search', [SearchController::class, 'search'])->name('search');
+
+// Booking
+Route::get('/booking/{type}', [BookingController::class, 'show'])->name('booking.show');
+Route::post('/booking', [BookingController::class, 'store'])->name('booking.store');
+
+// ==================== COMBINED AUTH ROUTES ====================
+
+// Combined Login/Register Page for Users
+Route::get('/auth', [AuthController::class, 'showLoginRegister'])->name('auth');
+
+// Redirect old URLs to combined page
+Route::get('/login', function () {
+    return redirect('/auth');
 });
 
+Route::get('/register', function () {
+    return redirect('/auth');
+});
 
+// Form submissions for users
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/register', [AuthController::class, 'register'])->name('register');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// ==================== ADMIN ROUTES ====================
+
+// Admin Authentication
+Route::get('/admin/login', [AuthController::class, 'showAdminLogin'])->name('admin.login');
+Route::post('/admin/login', [AuthController::class, 'login']);
+Route::post('/admin/logout', [AuthController::class, 'logout'])->name('admin.logout');
+
+// Admin Protected Routes
+Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    
+    // Tambahkan routes admin lainnya di sini
+    Route::get('/profile', function () {
+        $title = 'Admin Profile';
+        $slug = 'profile';
+        return view('admin.profile', compact('title','slug'));
+    })->name('profile');
+    
+    Route::get('/orders', function () {
+        $title = 'Orders Management';
+        $slug = 'orders';
+        return view('admin.orders', compact('title','slug'));
+    })->name('orders');
+    
+    Route::get('/packages', function () {
+        $title = 'Packages Management';
+        $slug = 'packages';
+        return view('admin.packages', compact('title','slug'));
+    })->name('packages');
+    
+    Route::get('/buyers', function () {
+        $title = 'Buyers Management';
+        $slug = 'buyers';
+        return view('admin.buyers', compact('title','slug'));
+    })->name('buyers');
+    
+    Route::get('/gallery', function () {
+        $title = 'Gallery Management';
+        $slug = 'gallery';
+        return view('admin.gallery', compact('title','slug'));
+    })->name('gallery');
+    
+    Route::get('/settings', function () {
+        $title = 'Settings';
+        $slug = 'settings';
+        return view('admin.settings', compact('title','slug'));
+    })->name('settings');
+});
+
+// ==================== USER PROTECTED ROUTES ====================
+Route::middleware(['auth'])->group(function () {
+    Route::get('/user/dashboard', function () {
+        $title = 'User Dashboard';
+        $slug = 'dashboard';
+        return view('user.dashboard', compact('title','slug'));
+    })->name('user.dashboard');
+});
