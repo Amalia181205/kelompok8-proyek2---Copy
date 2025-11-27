@@ -72,7 +72,8 @@
                         </a>
                     </li>
                 </ul>
-
+                
+    
                 <!-- Tab Content -->
                 <div class="tab-content" id="authTabsContent">
                     
@@ -118,12 +119,12 @@
                                 </div>
                             </div>
                             
-                            <!-- <div class="form-group mb-3">
-                                <div class="form-check">
-                                    <input type="checkbox" id="remember" name="remember" class="form-check-input" {{ old('remember') ? 'checked' : '' }}>
-                                    <label for="remember" class="form-check-label">Remember me</label>
-                                </div>
-                            </div> -->
+                            <!-- Tambahkan ini sebelum form register -->
+                            <div class="text-center mb-3">
+                                <a href="{{ url('/admin/login') }}" class="btn btn-outline-warning btn-sm">
+                                    <i class="fas fa-user-shield"></i> Admin Login
+                                </a>
+                            </div>
                             
                             <button type="submit" class="btn btn-primary btn-block" style="padding: 12px; font-weight: 600;">
                                 <i class="fas fa-sign-in-alt mr-2"></i> Sign In
@@ -212,6 +213,7 @@
                                     </label>
                                 </div>
                             </div>
+                            
                             
                             <button type="submit" class="btn btn-success btn-block" style="padding: 12px; font-weight: 600;">
                                 <i class="fas fa-user-plus mr-2"></i> Create Account

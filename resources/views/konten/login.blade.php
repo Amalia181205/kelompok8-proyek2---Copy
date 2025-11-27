@@ -37,6 +37,13 @@
                             Login
                         </button>
 
+                         <!-- Tambahkan ini sebelum form register -->
+                        <div class="text-center mb-3">
+                            <a href="{{ url('/admin/login') }}" class="btn btn-outline-warning btn-sm">
+                                <i class="fas fa-user-shield"></i> Admin Login
+                            </a>
+                        </div>
+
                         <!-- Register Link -->
                         <div class="text-center mt-3">
                         <span>Don't have an account?</span>
