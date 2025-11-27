@@ -119,6 +119,8 @@
                         </div>
                     </div>
                 </form>
+                
+               
 
                 <p class="mb-0 mt-3 text-center">
                     <a href="{{ url('/login') }}" class="text-center">I already have a membership</a>

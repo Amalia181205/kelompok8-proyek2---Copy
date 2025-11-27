@@ -18,7 +18,7 @@ class AuthController extends Controller
      */
     public function showLoginRegister()
     {
-        return view('auth.loginregister'); // PASTIKAN NAMA FILE INI BENAR
+        return view('auth.loginregister'); 
     }
 
     /**
