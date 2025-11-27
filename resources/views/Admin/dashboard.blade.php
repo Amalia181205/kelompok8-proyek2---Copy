@@ -25,7 +25,7 @@
     <style>
         :root {
             --primary-blue: #007bff;
-            --secondary-blue: #0056b3;
+            --secondary-blue: #00b3aa;
             --light-blue: #e3f2fd;
             --dark-blue: #004085;
         }

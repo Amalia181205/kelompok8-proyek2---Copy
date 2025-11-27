@@ -14,6 +14,6 @@ class DashboardController extends Controller
     {
         $title = 'Admin Dashboard';
         $slug = 'dashboard';
-        return view('admin.dashboard', compact('title', 'slug'));
+        return view('Admin.layoutadmin.dashboard', compact('title', 'slug'));
     }
 }

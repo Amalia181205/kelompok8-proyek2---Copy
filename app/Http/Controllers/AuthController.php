@@ -26,7 +26,7 @@ class AuthController extends Controller
      */
     public function showAdminLogin()
     {
-        return view('auth.admin-login');
+        return view('auth.adminlogin');
     }
 
     // ==================== AUTHENTICATION ====================
