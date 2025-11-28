@@ -65,11 +65,7 @@
             
                 <!-- Settings -->
                 <li class="nav-item">
-<<<<<<< HEAD
                     <a href="/setting"
-=======
-                    <a href="/admin/layoutadmin/setting"
->>>>>>> f8dfefc559ba12aea4e40360a5f3bda2f4276052
                     class="nav-link {{ ($slug == 'setting') ? 'active' : '' }}">
                     <i class="nav-icon fas fa-cog"></i>
                     <p>Settings</p>

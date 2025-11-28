@@ -101,21 +101,12 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
 //         return view('admin.gallery', compact('title','slug'));
 //     })->name('gallery');
     
-<<<<<<< HEAD
 //     Route::get('/setting', function () {
 //         $title = 'Settings';
 //         $slug = 'settings';
 //         return view('admin.setting', compact('title','slug'));
 //     })->name('setting');
  });
-=======
-    Route::get('/setting', function () {
-        $title = 'Setting';
-        $slug = 'setting';
-        return view('admin.layoutadmin.setting', compact('title','slug'));
-    })->name('settings');
-});
->>>>>>> f8dfefc559ba12aea4e40360a5f3bda2f4276052
 
 // ==================== USER PROTECTED ROUTES ====================
 Route::middleware(['auth'])->group(function () {
