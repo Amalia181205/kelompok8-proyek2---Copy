@@ -47,7 +47,7 @@
         }
         
         .admin-badge {
-            background: #dc3545;
+            background: #5435dc;
             color: white;
             padding: 5px 15px;
             border-radius: 20px;
