@@ -10,7 +10,7 @@ class ContactController extends Controller
     // Tampilkan form contact
     public function create()
     {
-        return view('konten.contact'); // kalau file blade di resources/views/contact.blade.php
+        return view('konten.contact'); 
     }
 
     // Simpan data (POST)

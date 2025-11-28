@@ -70,6 +70,16 @@ Route::get('/setting', [SettingController::class, 'index'])->name('setting');
 // Admin Protected Routes
 Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+Route::get('/setting', function () {
+    $title = 'Setting';
+    $slug = 'setting';
+    
+    // Ambil data dari database
+    $users = \App\Models\User::all(); // Ganti dengan model user Anda
+    $admins = \App\Models\admin::all(); // Ganti dengan model admin Anda
+    return view('admin.layoutadmin.setting', compact('title', 'slug', 'users', 'admins'));
+})->name('settings');
     // Tambahkan routes admin lainnya di sini
 //     Route::get('/profile', function () {
 //         $title = 'Admin Profile';
