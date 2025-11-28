@@ -56,7 +56,7 @@
             
                 <!-- Settings -->
                 <li class="nav-item">
-                    <a href="/settings"
+                    <a href="/setting"
                     class="nav-link {{ ($slug == 'setting') ? 'active' : '' }}">
                     <i class="nav-icon fas fa-cog"></i>
                     <p>Settings</p>
