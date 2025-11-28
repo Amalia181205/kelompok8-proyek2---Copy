@@ -20,7 +20,7 @@
 
                 <!-- Dashboard -->
                 <li class="nav-item">
-                    <a href="/dashboard"
+                    <a href="/admin/dashboard"
                        class="nav-link {{ ($slug == 'dashboard') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>Dashboard</p>
