@@ -45,6 +45,15 @@
                     </a>
                 </li>
 
+                <!-- Gallery -->
+                <li class="nav-item">
+                    <a href="/gallery"
+                       class="nav-link {{ ($slug == 'gallery') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-images"></i>
+                        <p>Gallery</p>
+                    </a>
+                </li>
+
                 <!-- Buyer -->
                 <li class="nav-item">
                     <a href="/buyers"
@@ -56,7 +65,7 @@
             
                 <!-- Settings -->
                 <li class="nav-item">
-                    <a href="/settings"
+                    <a href="/admin/layoutadmin/setting"
                     class="nav-link {{ ($slug == 'setting') ? 'active' : '' }}">
                     <i class="nav-icon fas fa-cog"></i>
                     <p>Settings</p>
