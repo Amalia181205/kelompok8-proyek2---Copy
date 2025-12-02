@@ -38,8 +38,8 @@
 
                 <!-- CreatePaket -->
                 <li class="nav-item">
-                    <a href="/createpaket"
-                       class="nav-link {{ ($slug == 'paket') ? 'active' : '' }}">
+                    <a href="{{ route('admin.packages.index') }}"
+                        class="nav-link {{ ($slug == 'packages') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-camera"></i>
                         <p>Create Paket</p>
                     </a>
@@ -47,10 +47,19 @@
 
                 <!-- Gallery -->
                 <li class="nav-item">
-                    <a href="/gallery"
+                    <a href="{{ route('admin.gallery.index') }}"
                        class="nav-link {{ ($slug == 'gallery') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-images"></i>
-                        <p>Gallery</p>
+                        <p>
+                            Gallery
+                            @php
+                                use App\Models\Gallery; 
+                                $galleryCount = Gallery::count();
+                            @endphp
+                            @if($galleryCount > 0)
+                            <span class="badge badge-info right">{{ $galleryCount }}</span>
+                            @endif
+                        </p>
                     </a>
                 </li>
 

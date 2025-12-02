@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\PackageController;
+use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ContactController;
@@ -54,9 +56,6 @@ Route::get('/register', function () {
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-// Pastikan route ini ada
-Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout']);
-
 
 // ==================== ADMIN ROUTES ====================
 
@@ -65,58 +64,71 @@ Route::get('/admin/login', [AuthController::class, 'showAdminLogin'])->name('adm
 Route::post('/admin/login', [AuthController::class, 'login']);
 Route::post('/admin/logout', [AuthController::class, 'logout'])->name('admin.logout');
 
+// Setting route di luar middleware (jika perlu diakses tanpa login)
 Route::get('/setting', [SettingController::class, 'index'])->name('setting');
 
 // Admin Protected Routes
 Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(function () {
+    // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-Route::get('/setting', function () {
-    $title = 'Setting';
-    $slug = 'setting';
+    // Settings Route (versi protected)
+    Route::get('/setting', function () {
+        $title = 'Setting';
+        $slug = 'setting';
+        
+        // Ambil data dari database
+        $users = \App\Models\User::all();
+        $admins = \App\Models\Admin::all();
+        return view('admin.layoutadmin.setting', compact('title', 'slug', 'users', 'admins'));
+    })->name('settings');
     
-    // Ambil data dari database
-    $users = \App\Models\User::all(); // Ganti dengan model user Anda
-    $admins = \App\Models\admin::all(); // Ganti dengan model admin Anda
-    return view('admin.layoutadmin.setting', compact('title', 'slug', 'users', 'admins'));
-})->name('settings');
-    // Tambahkan routes admin lainnya di sini
-//     Route::get('/profile', function () {
-//         $title = 'Admin Profile';
-//         $slug = 'profile';
-//         return view('admin.profile', compact('title','slug'));
-//     })->name('profile');
+    // ============= PACKAGE ROUTES =============
+    // Package Routes (CRUD)
+    Route::resource('packages', PackageController::class);
+    Route::put('/packages/{package}/toggle-status', 
+        [PackageController::class, 'toggleStatus'])
+        ->name('packages.toggleStatus');
+    // ==========================================
+
+    Route::prefix('gallery')->name('gallery.')->group(function () {
+        Route::get('/', [GalleryController::class, 'index'])->name('index');
+        Route::get('/create', [GalleryController::class, 'create'])->name('create');
+        Route::post('/', [GalleryController::class, 'store'])->name('store');
+        Route::get('/{id}', [GalleryController::class, 'show'])->name('show');
+        Route::get('/{id}/edit', [GalleryController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [GalleryController::class, 'update'])->name('update');
+        Route::delete('/{id}', [GalleryController::class, 'destroy'])->name('destroy');
+        Route::put('/{id}/toggle-status', [GalleryController::class, 'toggleStatus'])->name('toggleStatus');
+    });
     
-//     Route::get('/orders', function () {
-//         $title = 'Orders Management';
-//         $slug = 'orders';
-//         return view('admin.orders', compact('title','slug'));
-//     })->name('orders');
+    // Routes admin lainnya (tetap dikomentari jika belum dibutuhkan)
+    /*
+    Route::get('/profile', function () {
+        $title = 'Admin Profile';
+        $slug = 'profile';
+        return view('admin.profile', compact('title','slug'));
+    })->name('profile');
     
-//     Route::get('/packages', function () {
-//         $title = 'Packages Management';
-//         $slug = 'packages';
-//         return view('admin.packages', compact('title','slug'));
-//     })->name('packages');
+    Route::get('/orders', function () {
+        $title = 'Orders Management';
+        $slug = 'orders';
+        return view('admin.orders', compact('title','slug'));
+    })->name('orders');
     
-//     Route::get('/buyers', function () {
-//         $title = 'Buyers Management';
-//         $slug = 'buyers';
-//         return view('admin.buyers', compact('title','slug'));
-//     })->name('buyers');
+    Route::get('/buyers', function () {
+        $title = 'Buyers Management';
+        $slug = 'buyers';
+        return view('admin.buyers', compact('title','slug'));
+    })->name('buyers');
     
-//     Route::get('/gallery', function () {
-//         $title = 'Gallery Management';
-//         $slug = 'gallery';
-//         return view('admin.gallery', compact('title','slug'));
-//     })->name('gallery');
-    
-//     Route::get('/setting', function () {
-//         $title = 'Settings';
-//         $slug = 'settings';
-//         return view('admin.setting', compact('title','slug'));
-//     })->name('setting');
- });
+    Route::get('/gallery', function () {
+        $title = 'Gallery Management';
+        $slug = 'gallery';
+        return view('admin.gallery', compact('title','slug'));
+    })->name('gallery');
+    */
+});
 
 // ==================== USER PROTECTED ROUTES ====================
 Route::middleware(['auth'])->group(function () {
