@@ -29,7 +29,7 @@
 
                 <!-- Pesanan -->
                 <li class="nav-item">
-                    <a href="/pesanan"
+                    <a href="/admin/orders"
                        class="nav-link {{ ($slug == 'orders') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-shopping-cart"></i>
                         <p>Orders</p>

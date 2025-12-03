@@ -3,9 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\BuyersController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\PackageController;
 use App\Http\Controllers\Admin\GalleryController;
+use App\Http\Controllers\Admin\OrdersController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ContactController;
@@ -68,29 +70,32 @@ Route::post('/admin/logout', [AuthController::class, 'logout'])->name('admin.log
 Route::get('/setting', [SettingController::class, 'index'])->name('setting');
 
 // Admin Protected Routes
+
 Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(function () {
+
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Settings Route (versi protected)
+    // Orders
+    Route::get('/orders', [OrdersController::class, 'index'])->name('orders');
+
+    // Settings
     Route::get('/setting', function () {
         $title = 'Setting';
         $slug = 'setting';
         
-        // Ambil data dari database
         $users = \App\Models\User::all();
         $admins = \App\Models\Admin::all();
         return view('admin.layoutadmin.setting', compact('title', 'slug', 'users', 'admins'));
     })->name('settings');
-    
+
     // ============= PACKAGE ROUTES =============
     // Package Routes (CRUD)
     Route::resource('packages', PackageController::class);
-    Route::put('/packages/{package}/toggle-status', 
-        [PackageController::class, 'toggleStatus'])
+    Route::put('/packages/{package}/toggle-status', [PackageController::class, 'toggleStatus'])
         ->name('packages.toggleStatus');
-    // ==========================================
 
+    // Gallery
     Route::prefix('gallery')->name('gallery.')->group(function () {
         Route::get('/', [GalleryController::class, 'index'])->name('index');
         Route::get('/create', [GalleryController::class, 'create'])->name('create');
@@ -101,6 +106,8 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
         Route::delete('/{id}', [GalleryController::class, 'destroy'])->name('destroy');
         Route::put('/{id}/toggle-status', [GalleryController::class, 'toggleStatus'])->name('toggleStatus');
     });
+
+});
     
     // Routes admin lainnya (tetap dikomentari jika belum dibutuhkan)
     /*
@@ -128,7 +135,7 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
         return view('admin.gallery', compact('title','slug'));
     })->name('gallery');
     */
-});
+//});
 
 // ==================== USER PROTECTED ROUTES ====================
 Route::middleware(['auth'])->group(function () {
