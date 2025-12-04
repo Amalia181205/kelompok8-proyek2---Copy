@@ -86,7 +86,7 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
         
         $users = \App\Models\User::all();
         $admins = \App\Models\Admin::all();
-        return view('admin.layoutadmin.setting', compact('title', 'slug', 'users', 'admins'));
+        return view('Admin.layoutadmin.setting', compact('title', 'slug', 'users', 'admins'));
     })->name('settings');
 
     // ============= PACKAGE ROUTES =============
@@ -100,11 +100,11 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
         Route::get('/', [GalleryController::class, 'index'])->name('index');
         Route::get('/create', [GalleryController::class, 'create'])->name('create');
         Route::post('/', [GalleryController::class, 'store'])->name('store');
-        Route::get('/{id}', [GalleryController::class, 'show'])->name('show');
+        Route::get('/{gallery}', [GalleryController::class, 'show'])->name('show');
         Route::get('/{id}/edit', [GalleryController::class, 'edit'])->name('edit');
-        Route::put('/{id}', [GalleryController::class, 'update'])->name('update');
+        Route::put('/{gallery}', [GalleryController::class, 'update'])->name('update');
         Route::delete('/{id}', [GalleryController::class, 'destroy'])->name('destroy');
-        Route::put('/{id}/toggle-status', [GalleryController::class, 'toggleStatus'])->name('toggleStatus');
+        Route::put('/{gallery}/toggle-status', [GalleryController::class, 'toggleStatus'])->name('toggleStatus');
     });
 
 });

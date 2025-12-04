@@ -785,15 +785,15 @@
         );
 
         // Better delete confirmation
-        $('.btn-delete').on('click', function(e) {
-            e.preventDefault();
-            const form = $(this).closest('form');
-            const title = form.closest('.gallery-item').find('.gallery-title').text();
+       // $('.btn-delete').on('click', function(e) {
+            //e.preventDefault();
+            //const form = $(this).closest('form');
+            //const title = form.closest('.gallery-item').find('.gallery-title').text();
             
-            if (confirm(`Apakah Anda yakin ingin menghapus "${title}"?`)) {
-                form.submit();
-            }
-        });
-    });
+            //if (confirm(`Apakah Anda yakin ingin menghapus "${title}"?`)) {
+                //form.submit();
+            //}
+        //});
+    //});
 </script>
 @endsection

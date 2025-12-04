@@ -155,7 +155,7 @@
                     Form Edit Paket Foto
                 </h4>
 
-                <form action="{{ route('admin.packages.update', $package->id) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('admin.gallery.update', $gallery->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
 

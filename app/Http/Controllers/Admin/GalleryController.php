@@ -81,17 +81,18 @@ class GalleryController extends Controller
     }
 
     // Menampilkan form edit galeri
-    public function edit(Gallery $gallery)
+    public function edit($id)
     {
         $title = 'Edit Galeri';
         $slug = 'gallery';
-        
-        return view('admin.gallery.edit', compact('title', 'slug', 'gallery'));
+        $gallery = Gallery::findOrFail($id);
+        return view('admin.gallery.edit', compact('title','slug','gallery'));
     }
 
     // Update galeri
     public function update(Request $request, Gallery $gallery)
     {
+    
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -100,31 +101,32 @@ class GalleryController extends Controller
             'sort_order' => 'nullable|integer',
             'is_active' => 'nullable|boolean'
         ]);
-
+         
         $data = $request->all();
         
         // Upload gambar baru jika ada
-        if ($request->hasFile('image')) {
-            // Hapus gambar lama
+         if ($request->hasFile('image')) {
+         }
+             // Hapus gambar lama
             if ($gallery->image) {
-                Storage::disk('public')->delete($gallery->image);
-            }
+            //  Storage::disk('public')->delete($gallery->image);
+            //  }
             
-            // Upload gambar baru
-            $image = $request->file('image');
-            $filename = time() . '_' . $image->getClientOriginalName();
-            $path = 'gallery/' . $filename;
+             // Upload gambar baru
+             $image = $request->file('image');
+             $filename = time() . '_' . $image->getClientOriginalName();
+             $path = 'gallery/' . $filename;
             
-            // Optimasi gambar
-            $image = Image::make($image);
-            $image->resize(1200, null, function ($constraint) {
-                $constraint->aspectRatio();
-                $constraint->upsize();
+             // Optimasi gambar
+             $image = Image::make($image);
+             $image->resize(1200, null, function ($constraint) {
+             $constraint->aspectRatio();
+             $constraint->upsize();
             });
             
-            Storage::disk('public')->put($path, (string) $image->encode());
-            $data['image'] = $path;
-        }
+             Storage::disk('public')->put($path, (string) $image->encode());
+             $data['image'] = $path;
+         }
 
         // Update status aktif
         $data['is_active'] = $request->has('is_active');
@@ -133,14 +135,18 @@ class GalleryController extends Controller
 
         return redirect()->route('admin.gallery.index')
             ->with('success', 'Galeri berhasil diperbarui!');
-    }
+}
+
 
     // Hapus galeri
-    public function destroy(Gallery $gallery)
+    public function destroy($id)
     {
+        $gallery = Gallery::findOrFail($id);
         // Hapus gambar dari storage
-        if ($gallery->image) {
-            Storage::disk('public')->delete($gallery->image);
+        // if ($gallery->image) {
+        //     Storage::disk('public')->delete($gallery->image);
+        if ($gallery->image && Storage::disk('public')->exists($gallery->image)) {
+        Storage::disk('public')->delete($gallery->image);
         }
         
         $gallery->delete();
