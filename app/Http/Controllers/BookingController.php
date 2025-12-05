@@ -65,13 +65,14 @@ class BookingController extends Controller
             return back()->with('info', 'You have already booked this package.');
         }
 
-        Booking::create([
+        $booking = Booking::create([
             'user_id' => $user->id,
             'package_name' => $request->package_name,
             'booking_date' => $request->booking_date,
             'status' => 'booked',
         ]);
 
-        return redirect('/')->with('success', 'Booking confirmed.');
+        // Redirect the user to the payment menu for this booking
+        return redirect()->route('payment.menu', ['booking' => $booking->id]);
     }
 }

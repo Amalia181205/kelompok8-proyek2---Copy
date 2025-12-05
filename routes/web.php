@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\OrdersController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\PaymentController;
 
 // ==================== PUBLIC ROUTES ====================
 
@@ -144,4 +145,10 @@ Route::middleware(['auth'])->group(function () {
         $slug = 'dashboard';
         return view('user.dashboard', compact('title','slug'));
     })->name('user.dashboard');
+
+    // Payment flow routes
+    Route::get('/payment/menu/{booking}', [PaymentController::class, 'menu'])->name('payment.menu');
+    Route::post('/payment/create/{booking}', [PaymentController::class, 'create'])->name('payment.create');
+    Route::post('/payment/confirm/{payment}', [PaymentController::class, 'confirm'])->name('payment.confirm');
+    Route::get('/payment/history', [PaymentController::class, 'history'])->name('payment.history');
 });
