@@ -130,7 +130,7 @@
             <!-- Product 2 -->
             <div class="product-card">
                 <div class="product-image">
-                    <img src="/png/bajuPrewweding.jpg" alt="Product 2">
+                    <img src="/png/PaketPengantin.jpg" alt="Product 2">
                 </div>
                 <div class="product-details">
                     <h3>Wedding wardrobe</h3>
