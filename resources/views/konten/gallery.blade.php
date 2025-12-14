@@ -1,5 +1,88 @@
 @extends('bagianAwal.main')
 
+@section('title', 'Gallery')
+
+@section('content')
+
+{{-- ================= HALAMAN KATEGORI ================= --}}
+@if ($page === 'index')
+
+<div class="container my-5">
+    <div class="row g-4">
+
+        @foreach ($kategori as $item)
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 category-card text-center p-4">
+
+                <i class="{{ $item['icon'] }} icon-category"></i>
+
+                <h4 class="fw-bold mt-3">{{ $item['nama'] }}</h4>
+
+                <a href="{{ route('gallery.detail', $item['slug']) }}"
+                   class="btn btn-primary mt-3 px-4 py-2">
+                    View Gallery
+                </a>
+
+            </div>
+        </div>
+        @endforeach
+
+    </div>
+</div>
+
+{{-- ================= HALAMAN DETAIL ================= --}}
+@elseif ($page === 'detail')
+
+<div class="container my-5">
+
+    <h3 class="fw-bold mb-4 text-center">
+        {{ strtoupper($kategori) }} GALLERY
+    </h3>
+
+    <div class="row g-4">
+
+        @forelse ($images as $img)
+        <div class="col-md-4">
+            <img src="{{ asset('png/' . $img) }}"
+                 class="img-fluid rounded-4 gallery-img">
+        </div>
+        @empty
+        <p class="text-center">Gallery belum tersedia</p>
+        @endforelse
+
+    </div>
+</div>
+
+@endif
+
+<style>
+.category-card {
+    border-radius: 20px;
+    background: #f7f7f7;
+    transition: .3s;
+}
+.category-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+.icon-category {
+    font-size: 60px;
+    color: #1856ff;
+}
+.gallery-img {
+    transition: .4s;
+    cursor: pointer;
+}
+.gallery-img:hover {
+    transform: scale(1.06);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+}
+</style>
+
+@endsection
+
+{{-- @extends('bagianAwal.main')
+
 @section('title', 'Gallery - WebSaya.Com')
 
 @section('content')
@@ -132,4 +215,4 @@
     }
 </style>
 
-@endsection
+@endsection  --}}

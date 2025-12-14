@@ -12,6 +12,8 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\GalleryUserController;
+
 
 // ==================== PUBLIC ROUTES ====================
 
@@ -28,7 +30,10 @@ Route::get('/home', function () {
 
 // Shop & Gallery
 Route::view('/shop', 'konten.shop')->name('shop');
-Route::view('/gallery', 'konten.gallery')->name('gallery');
+//Route::view('/gallery', 'konten.gallery')->name('gallery');
+
+Route::get('/gallery', [GalleryUserController::class, 'index'])->name('gallery');
+Route::get('/gallery/{kategori}', [GalleryUserController::class, 'detail'])->name('gallery.detail');
 
 // Contact
 Route::get('/contact', [ContactController::class, 'create'])->name('contact.create');
