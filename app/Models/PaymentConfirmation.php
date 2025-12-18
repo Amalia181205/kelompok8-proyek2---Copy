@@ -4,19 +4,21 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Payment extends Model
+class PaymentConfirmation extends Model
 {
-    protected $table = 'payments';
+    protected $table = 'payment_confirmations';
 
     protected $fillable = [
         'booking_id',
+        'order_id',
         'status',
         'metode',
-        'amount',
+        'gross_amount',
+        'payload',
     ];
 
     public function booking()
     {
-        return $this->belongsTo(Booking::class, 'booking_id');
+        return $this->belongsTo(Booking::class);
     }
 }

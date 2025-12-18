@@ -26,5 +26,11 @@ class AdminSeeder extends Seeder
             'email' => 'superadmin@fanesya.com',
             'password' => Hash::make('admin123'),
         ]);
+
+        Admin::create([
+            'name' => 'Administrator',
+            'email' => 'mimin@fanesya.com',
+            'password' => Hash::make('password123'),
+        ]);
     }
 }

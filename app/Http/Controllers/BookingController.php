@@ -49,30 +49,43 @@ class BookingController extends Controller
 
     // Store a new booking
     public function store(Request $request)
-    {
-        $request->validate([
-            'package_name' => 'required|string',
-            'booking_date' => 'required|date',
-        ]);
+{
+    $request->validate([
+        'package_name' => 'required|string',
+        'booking_date' => 'required|date',
+    ]);
 
-        $user = Auth::user();
-        if (!$user) {
-            return redirect('/login');
-        }
-
-        // Prevent duplicate bookings for same package by the same user
-        if (Booking::userHasBooked($user->id, $request->package_name)) {
-            return back()->with('info', 'You have already booked this package.');
-        }
-
-        $booking = Booking::create([
-            'user_id' => $user->id,
-            'package_name' => $request->package_name,
-            'booking_date' => $request->booking_date,
-            'status' => 'booked',
-        ]);
-
-        // Redirect the user to the payment menu for this booking
-        return redirect()->route('payment.menu', ['booking' => $booking->id]);
+    $user = Auth::user();
+    if (!$user) {
+        return redirect('/login');
     }
+
+    /**
+     * CEK APAKAH SUDAH ADA BOOKING YANG BELUM SELESAI
+     */
+    $existingBooking = Booking::where('user_id', $user->id)
+        ->where('package_name', $request->package_name)
+        ->whereIn('status', ['booked', 'pending'])
+        ->latest()
+        ->first();
+
+    if ($existingBooking) {
+        // 🔥 JANGAN BALIK KE BOOKING, LANJUT KE PAYMENT
+        return redirect()->route('payment.menu', $existingBooking->id);
+    }
+
+    /**
+     * BUAT BOOKING BARU
+     */
+    $booking = Booking::create([
+        'user_id' => $user->id,
+        'package_name' => $request->package_name,
+        'booking_date' => $request->booking_date,
+        'status' => 'booked',
+    ]);
+
+    // 🔥 LANGSUNG KE PEMBAYARAN
+    return redirect()->route('payment.menu', $booking->id);
+}
+
 }

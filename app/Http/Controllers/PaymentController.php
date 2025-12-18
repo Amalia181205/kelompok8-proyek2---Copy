@@ -4,77 +4,132 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Booking;
-use App\Models\Payment;
+use App\Models\PaymentConfirmation;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Midtrans\Snap;
+use Midtrans\Notification;
 
 class PaymentController extends Controller
 {
-    private function packageAmount($packageName)
+    private function packageAmount(string $packageName): int
     {
-        switch ($packageName) {
-            case 'personal': return 160000;
-            case 'family': return 50000;
-            case 'maternity': return 600000;
-            case 'prewedding': return 400000;
-            default: return 0;
-        }
+        $packageName = strtolower(trim($packageName));
+    
+    return match ($packageName) {
+        'personal'   => 160000,
+        'family'     => 500000,
+        'Maternity & Baby'  => 600000,
+        'prewedding' => 400000,
+        default      => throw new \InvalidArgumentException("Invalid package: {$packageName}"),
+    };
     }
 
-    // Show payment menu for a booking
-    public function menu($bookingId)
+    public function menu(int $booking)
     {
-        $booking = Booking::findOrFail($bookingId);
-        if ($booking->user_id !== Auth::id()) {
-            abort(403);
-        }
+        $booking = Booking::findOrFail($booking);
+        abort_if($booking->user_id !== Auth::id(), 403);
 
         $amount = $this->packageAmount($booking->package_name);
 
-        return view('payment.menu_pembayaran', compact('booking', 'amount'));
+        $payment = PaymentConfirmation::where('booking_id', $booking->id)
+            ->where('status', 'pending')
+            ->first();
+
+        return view('payment.menupembayaran', compact(
+            'booking',
+            'amount',
+            'payment'
+        ));
     }
 
-    // Create a payment record and display QRIS placeholder
-    public function create(Request $request, $bookingId)
+    public function create(Request $request, int $booking)
     {
-        $booking = Booking::findOrFail($bookingId);
-        if ($booking->user_id !== Auth::id()) {
-            abort(403);
-        }
+        $booking = Booking::findOrFail($booking);
+        abort_if($booking->user_id !== Auth::id(), 403);
 
-        $payment = Payment::create([
+        $amount = $this->packageAmount($booking->package_name);
+
+            \Log::info('Payment Debug', [
             'booking_id' => $booking->id,
-            'status' => 'pending',
-            'metode' => 'QRIS',
-            'amount' => $this->packageAmount($booking->package_name),
+            'package_name' => $booking->package_name,
+            'amount' => $amount,
+            'raw_package_name' => var_export($booking->package_name, true)
         ]);
 
-        $amount = $payment->amount;
-
-        return view('payment.menu_pembayaran', compact('booking', 'payment', 'amount'));
-    }
-
-    // Simulated confirmation (in real world a webhook would handle this)
-    public function confirm($paymentId)
-    {
-        $payment = Payment::findOrFail($paymentId);
-        if ($payment->booking->user_id !== Auth::id()) {
-            abort(403);
+            if ($amount <= 0) {
+            return back()->withErrors(['amount' => 'Invalid package or amount is zero']);
         }
 
-        $payment->status = 'paid';
-        $payment->save();
+        $payment = PaymentConfirmation::create([
+            'booking_id'   => $booking->id,
+            'order_id'     => 'BOOK-' . $booking->id . '-' . time(),
+            'metode'       => 'Midtrans',
+            'status'       => 'pending',
+            'gross_amount' => $amount,
+        ]);
 
-        return redirect()->route('payment.history')->with('success', 'Pembayaran berhasil dikonfirmasi.');
+        // $payment = PaymentConfirmation::firstOrCreate(
+        //     [
+        //         'booking_id' => $booking->id,
+        //         'status'     => 'pending',
+        //     ],
+        //     [
+        //         'order_id' => 'BOOK-' . $booking->id . '-' . time(),
+        //         'metode'   => 'Midtrans',
+        //         'gross_amount'   => $amount,
+        //     ]
+        // );
+
+        $snapToken = Snap::getSnapToken([
+            'transaction_details' => [
+                'order_id'     => $payment->order_id,
+                'gross_amount' => (int) $amount,
+            ],
+            'customer_details' => [
+                'first_name' => Auth::user()->name,
+                'email'      => Auth::user()->email,
+            ],
+        ]);
+
+        return view('payment.menupembayaran', compact(
+            'booking',
+            'payment',
+            // 'amount',
+            'snapToken'
+        ));
     }
 
-    // Show transaction history for logged in user
+    public function callback(Request $request)
+    {
+        $notif = new Notification();
+        Log::info('Midtrans Callback', (array) $notif);
+
+        $payment = PaymentConfirmation::where('order_id', $notif->order_id)->first();
+        if (!$payment) return response()->json(['message' => 'Not found'], 404);
+
+        $payment->status = match ($notif->transaction_status) {
+            'capture', 'settlement' => 'paid',
+            'pending'               => 'pending',
+            default                 => 'failed',
+        };
+
+        $payment->payload = json_encode($notif);
+        $payment->save();
+
+        return response()->json(['status' => 'ok']);
+    }
+
+    public function finish()
+    {
+        return view('payment.finish');
+    }
+
     public function history()
     {
-        $userId = Auth::id();
-
-        $payments = Payment::whereHas('booking', function ($q) use ($userId) {
-            $q->where('user_id', $userId);
-        })->with('booking')->orderBy('created_at', 'desc')->get();
+        $payments = PaymentConfirmation::whereHas('booking', fn ($q) =>
+            $q->where('user_id', Auth::id())
+        )->latest()->get();
 
         return view('payment.history_pembayaran', compact('payments'));
     }

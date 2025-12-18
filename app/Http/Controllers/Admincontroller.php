@@ -14,26 +14,18 @@ class AdminController extends Controller
     }
 
     public function login(Request $request)
-    {
-        $credentials = $request->validate([
-            'username' => 'required|string',
-            'password' => 'required|string',
-        ]);
+{
+    $credentials = $request->only('email', 'password');
 
-        if (Auth::guard('admin')->attempt($credentials)) {
-            $request->session()->regenerate();
-            
-            // Update last login
-            Admin::where('id', Auth::guard('admin')->id())
-                 ->update(['last_login' => now()]);
-
-            return redirect()->intended('/admin/dashboard');
-        }
-
-        return back()->withErrors([
-            'username' => 'Username atau password salah.',
-        ])->onlyInput('username');
+    if (Auth::guard('admin')->attempt($credentials)) {
+        $request->session()->regenerate();
+        return redirect()->route('admin.dashboard');
     }
+
+    return back()->withErrors([
+        'email' => 'Email atau password salah',
+    ]);
+}
 
     public function dashboard()
     {

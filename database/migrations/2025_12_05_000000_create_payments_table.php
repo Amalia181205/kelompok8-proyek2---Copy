@@ -6,22 +6,27 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::create('payments', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('booking_id')->nullable();
-            $table->integer('amount')->default(0);
-            $table->string('metode')->nullable();
-            $table->string('status')->default('pending');
-            $table->timestamps();
+        Schema::create('payment_confirmations', function (Blueprint $table) {
+        $table->id();
+        $table->foreignId('booking_id')->constrained()->onDelete('cascade');
+        $table->string('order_id')->unique();
+        $table->string('metode');
+        $table->string('status')->default('pending');
+        $table->string('payment_type')->nullable();
+        $table->integer('gross_amount');
+        $table->string('snap_token')->nullable();
+        $table->json('payload')->nullable();
+        $table->timestamps();
+    });
 
-            $table->foreign('booking_id')->references('id')->on('bookings')->onDelete('set null');
-        });
     }
 
-    public function down()
+
+    public function down(): void
     {
-        Schema::dropIfExists('payments');
+        Schema::dropIfExists('payment_confirmations');
     }
+
 };

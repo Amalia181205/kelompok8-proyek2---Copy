@@ -13,90 +13,70 @@ class AuthController extends Controller
 {
     // ==================== SHOW FORMS ====================
 
-    /**
-     * Show combined login/register form for users
-     */
+    // Form login + register user
     public function showLoginRegister()
     {
-        return view('auth.loginregister'); 
+        return view('auth.loginregister');
     }
 
-    /**
-     * Show admin login form
-     */
+    // Form login admin
     public function showAdminLogin()
     {
         return view('auth.adminlogin');
     }
 
-    // ==================== AUTHENTICATION ====================
+    // ==================== LOGIN USER ====================
 
-    /**
-     * Handle login for both user and admin
-     */
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'email' => 'required|email',
+            'email'    => 'required|email',
             'password' => 'required|string',
         ]);
 
-        $isAdmin = $request->is('admin/login');
-        $guard = $isAdmin ? 'admin' : 'web';
-        $remember = $request->has('remember');
+        $remember = $request->boolean('remember');
 
-        // LOGIN UNTUK ADMIN
-        if ($isAdmin) {
-            $admin = Admin::where('email', $credentials['email'])->first();
-            
-            if (!$admin) {
-                return redirect('/admin/login')
-                    ->withErrors(['email' => 'Admin account not found.'])
-                    ->withInput($request->only('email', 'remember'));
-            }
-
-            if (Auth::guard('admin')->attempt($credentials, $remember)) {
-                $request->session()->regenerate();
-                return redirect()->intended('/admin/dashboard')
-                    ->with('success', 'Welcome back, Admin!');
-            } else {
-                return redirect('/admin/login')
-                    ->withErrors(['password' => 'Invalid password for admin.'])
-                    ->withInput($request->only('email', 'remember'));
-            }
-        } 
-        // LOGIN UNTUK USER
-        else {
-            $user = User::where('email', $credentials['email'])->first();
-            
-            if (!$user) {
-                return redirect('/auth')
-                    ->withErrors(['email' => 'User account not found. Please register first.'])
-                    ->withInput($request->only('email', 'remember'))
-                    ->with('form_type', 'login');
-            }
-
-            if (Auth::guard('web')->attempt($credentials, $remember)) {
-                $request->session()->regenerate();
-                return redirect()->intended('/')
-                    ->with('success', 'Welcome back!');
-            } else {
-                return redirect('/auth')
-                    ->withErrors(['password' => 'Invalid password.'])
-                    ->withInput($request->only('email', 'remember'))
-                    ->with('form_type', 'login');
-            }
+        if (Auth::attempt($credentials, $remember)) {
+            $request->session()->regenerate();
+            return redirect()->intended('/')
+                ->with('success', 'Welcome back!');
         }
+
+        return redirect('/auth')
+            ->withErrors(['email' => 'Email atau password salah'])
+            ->withInput()
+            ->with('form_type', 'login');
     }
 
-    /**
-     * Handle registration (only for users)
-     */
+    // ==================== LOGIN ADMIN ====================
+
+    public function adminLogin(Request $request)
+    {
+        $credentials = $request->validate([
+            'email'    => 'required|email',
+            'password' => 'required|string',
+        ]);
+
+        $remember = $request->boolean('remember');
+
+        if (Auth::guard('admin')->attempt($credentials, $remember)) {
+            $request->session()->regenerate();
+            return redirect()->intended('/admin/dashboard')
+                ->with('success', 'Welcome back, Admin!');
+        }
+
+        return redirect('/admin/login')
+            ->withErrors(['email' => 'Email atau password admin salah'])
+            ->withInput();
+    }
+
+    // ==================== REGISTER USER ====================
+
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email',
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|email|max:255|unique:users,email',
             'password' => 'required|string|min:6|confirmed',
         ]);
 
@@ -108,37 +88,33 @@ class AuthController extends Controller
         }
 
         $user = User::create([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'password' => Hash::make($request->input('password')),
+            'name'     => $request->name,
+            'email'    => $request->email,
+            'password' => Hash::make($request->password),
         ]);
 
-        // Auto login setelah registrasi
         Auth::login($user);
-        
+
         return redirect('/')
-            ->with('success', 'Account created successfully! Welcome!')
-            ->with('form_type', 'register');
+            ->with('success', 'Account created successfully!');
     }
 
-    /**
-     * Handle logout for both user and admin
-     */
+    // ==================== LOGOUT (USER & ADMIN) ====================
+
     public function logout(Request $request)
     {
-        $isAdmin = $request->is('admin/logout');
-        
-        if ($isAdmin) {
+        if (Auth::guard('admin')->check()) {
             Auth::guard('admin')->logout();
-            $redirectPath = '/admin/login';
+            $redirect = '/admin/login';
         } else {
             Auth::logout();
-            $redirectPath = '/auth';
+            $redirect = '/auth';
         }
-        
+
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect($redirectPath)->with('success', 'You have been logged out.');
+        return redirect($redirect)
+            ->with('success', 'You have been logged out.');
     }
 }
