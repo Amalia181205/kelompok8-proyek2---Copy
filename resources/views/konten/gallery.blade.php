@@ -43,12 +43,15 @@
 
         @forelse ($images as $img)
         <div class="col-md-4">
-            <img src="{{ asset('png/' . $img) }}"
-                 class="img-fluid rounded-4 gallery-img">
+        <img 
+        src="{{ asset('storage/' . $img->image) }}"
+        alt="{{ $img->title }}"
+        class="img-fluid rounded-4 gallery-img">
         </div>
         @empty
         <p class="text-center">Gallery belum tersedia</p>
         @endforelse
+
 
     </div>
 </div>

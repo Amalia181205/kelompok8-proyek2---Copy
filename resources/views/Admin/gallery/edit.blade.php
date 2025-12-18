@@ -43,10 +43,10 @@
                         <select name="category" class="form-control" required>
                             <option value="wedding"     {{ $gallery->category == 'wedding' ? 'selected' : '' }}>Wedding</option>
                             <option value="family"      {{ $gallery->category == 'family' ? 'selected' : '' }}>Family</option>
-                            <option value="graduation"  {{ $gallery->category == 'graduation' ? 'selected' : '' }}>Graduation</option>
-                            <option value="maternity"   {{ $gallery->category == 'maternity' ? 'selected' : '' }}>Maternity</option>
-                            <option value="portrait"    {{ $gallery->category == 'portrait' ? 'selected' : '' }}>Portrait</option>
-                            <option value="event"       {{ $gallery->category == 'event' ? 'selected' : '' }}>Event</option>
+                            <option value="prewedding"  {{ $gallery->category == 'prewedding' ? 'selected' : '' }}>Prewedding</option>
+                            <option value="baby&maternity"   {{ $gallery->category == 'baby&maternity' ? 'selected' : '' }}>Baby&Maternity</option>
+                            <option value="personal"    {{ $gallery->category == 'personal' ? 'selected' : '' }}>PersonalGallery</option>
+                            {{-- <option value="event"       {{ $gallery->category == 'event' ? 'selected' : '' }}>Event</option> --}}
                             <option value="other"       {{ $gallery->category == 'other' ? 'selected' : '' }}>Other</option>
                         </select>
                     </div>

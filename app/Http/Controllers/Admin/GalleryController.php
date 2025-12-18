@@ -36,7 +36,7 @@ class GalleryController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
-            'category' => 'required|in:wedding,family,graduation,maternity,portrait,event,other',
+            'category' => 'required|in:wedding,family,prewedding,baby&maternity,personal,other',
             'sort_order' => 'nullable|integer',
             'is_active' => 'nullable|boolean'
         ]);
@@ -89,53 +89,53 @@ class GalleryController extends Controller
         return view('admin.gallery.edit', compact('title','slug','gallery'));
     }
 
+
     // Update galeri
-    public function update(Request $request, Gallery $gallery)
-    {
+     public function update(Request $request, Gallery $gallery)
+     {
     
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
-            'category' => 'required|in:wedding,family,graduation,maternity,portrait,event,other',
-            'sort_order' => 'nullable|integer',
-            'is_active' => 'nullable|boolean'
-        ]);
+         $request->validate([
+                'title' => 'required|string|max:255',
+             'description' => 'nullable|string',
+             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+             'category' => 'required|in:wedding,family,prewedding,baby&maternity,personal,other',
+             'sort_order' => 'nullable|integer',
+             'is_active' => 'nullable|boolean'
+         ]);
          
-        $data = $request->all();
+         $data = $request->all();
         
-        // Upload gambar baru jika ada
-         if ($request->hasFile('image')) {
-         }
-             // Hapus gambar lama
-            if ($gallery->image) {
-            //  Storage::disk('public')->delete($gallery->image);
-            //  }
+         // Upload gambar baru jika ada
+          if ($request->hasFile('image')) {
+          }
+              // Hapus gambar lama
+             if ($gallery->image) {
+             //  Storage::disk('public')->delete($gallery->image);
+             //  }
             
-             // Upload gambar baru
-             $image = $request->file('image');
-             $filename = time() . '_' . $image->getClientOriginalName();
-             $path = 'gallery/' . $filename;
+              // Upload gambar baru
+              $image = $request->file('image');
+              $filename = time() . '_' . $image->getClientOriginalName();
+              $path = 'gallery/' . $filename;
             
-             // Optimasi gambar
-             $image = Image::make($image);
-             $image->resize(1200, null, function ($constraint) {
-             $constraint->aspectRatio();
-             $constraint->upsize();
-            });
+              // Optimasi gambar
+              $image = Image::make($image);
+              $image->resize(1200, null, function ($constraint) {
+              $constraint->aspectRatio();
+              $constraint->upsize();
+             });
             
-             Storage::disk('public')->put($path, (string) $image->encode());
-             $data['image'] = $path;
+              Storage::disk('public')->put($path, (string) $image->encode());
+              $data['image'] = $path;
          }
 
-        // Update status aktif
-        $data['is_active'] = $request->has('is_active');
-
-        $gallery->update($data);
+         // Update status aktif
+         $data['is_active'] = $request->has('is_active');
+         $gallery->update($data);
 
         return redirect()->route('admin.gallery.index')
-            ->with('success', 'Galeri berhasil diperbarui!');
-}
+             ->with('success', 'Galeri berhasil diperbarui!');
+ }
 
 
     // Hapus galeri

@@ -36,10 +36,10 @@
                             <option value="">-- Pilih Kategori --</option>
                             <option value="wedding">Wedding</option>
                             <option value="family">Family</option>
-                            <option value="graduation">Graduation</option>
-                            <option value="maternity">Maternity</option>
-                            <option value="portrait">Portrait</option>
-                            <option value="event">Event</option>
+                            <option value="prewedding">Prewedding</option>
+                            <option value="baby&maternity">Baby&Maternity</option>
+                            <option value="personal">PersonalGallery</option>
+                            {{-- <option value="event">Event</option> --}}
                             <option value="other">Other</option>
                         </select>
                     </div>
