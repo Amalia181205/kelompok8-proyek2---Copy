@@ -15,14 +15,14 @@ class PaymentController extends Controller
     private function packageAmount(string $packageName): int
     {
         $packageName = strtolower(trim($packageName));
-    
-    return match ($packageName) {
-        'personal'   => 160000,
-        'family'     => 500000,
-        'Maternity & Baby'  => 600000,
-        'prewedding' => 400000,
-        default      => throw new \InvalidArgumentException("Invalid package: {$packageName}"),
-    };
+        return match ($packageName) {
+            'personal' => 160000,
+            'personal gallery' => 160000, // Tambahan agar tidak error
+            'family' => 500000,
+            'maternity & baby' => 600000,
+            'prewedding' => 400000,
+            default => throw new \InvalidArgumentException("Invalid package: {$packageName}"),
+        };
     }
 
     public function menu(int $booking)
@@ -50,7 +50,7 @@ class PaymentController extends Controller
 
         $amount = $this->packageAmount($booking->package_name);
 
-            \Log::info('Payment Debug', [
+            Log::info('Payment Debug', [
             'booking_id' => $booking->id,
             'package_name' => $booking->package_name,
             'amount' => $amount,
