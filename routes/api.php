@@ -1,13 +1,9 @@
 <?php
-
+// routes/api.php
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\Admin\OrdersController; // ✅ BENAR
 
-Route::post('/midtrans/callback', [PaymentController::class, 'callback']);
+// KOSONGKAN FILE INI atau HAPUS SEMUA ROUTE
+// Biarkan file tetap ada tapi kosong
 
-Route::get('/orders', [OrdersController::class, 'index']);
-Route::post('/orders', [OrdersController::class, 'store']);
-Route::get('/orders/{id}', [OrdersController::class, 'show']);
-Route::put('/orders/{id}', [OrdersController::class, 'update']);
-Route::delete('/orders/{id}', [OrdersController::class, 'destroy']);
+// JANGAN ADA ROUTE MIDTRANS DI SINI!
+// Semua route midtrans sudah di web.php

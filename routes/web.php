@@ -126,16 +126,30 @@ Route::middleware('auth')->group(function () {
         return view('user.dashboard', compact('title', 'slug'));
     })->name('user.dashboard');
 
-    // Payment
-    Route::get('/payment/menu/{booking}', [PaymentController::class, 'menu'])
+    // ✅ PAYMENT ROUTES - PERBAIKI PARAMETER
+    Route::get('/payment/{booking}/menu', [PaymentController::class, 'menu'])
         ->name('payment.menu');
 
-    Route::post('/payment/create/{booking}', [PaymentController::class, 'create'])
+    Route::get('/payment/{booking}/create', [PaymentController::class, 'create'])
         ->name('payment.create');
 
     Route::get('/payment/finish', [PaymentController::class, 'finish'])
         ->name('payment.finish');
 
+    Route::get('/payment/error', [PaymentController::class, 'error'])
+        ->name('payment.error');
+
+    Route::get('/payment/pending', [PaymentController::class, 'pending'])
+        ->name('payment.pending');
+
     Route::get('/payment/history', [PaymentController::class, 'history'])
         ->name('payment.history');
 });
+
+// ✅ MIDTRANS CALLBACK - PASTIKAN INI SATU-SATUNYA
+Route::post('/api/midtrans/callback', [PaymentController::class, 'callback'])
+    ->withoutMiddleware(['web', 'csrf'])
+    ->name('midtrans.callback');
+
+// ✅ JIKA PAKAI MidtransController, HAPUS atau COMMENT
+// Route::post('/midtrans/callback', [MidtransController::class, 'callback']);
