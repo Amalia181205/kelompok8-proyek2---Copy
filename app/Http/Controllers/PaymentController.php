@@ -27,7 +27,7 @@ class PaymentController extends Controller
         $packageName = strtolower(trim($packageName));
         
         return match ($packageName) {
-            'personal' => 160000,
+            'personal gallery' => 160000,
             'family' => 500000,
             'maternity & baby' => 600000,
             'prewedding' => 400000,
