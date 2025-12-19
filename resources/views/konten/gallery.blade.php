@@ -70,7 +70,7 @@
 }
 .icon-category {
     font-size: 60px;
-    color: #1856ff;
+    color: #34bcfb;
 }
 .gallery-img {
     transition: .4s;
