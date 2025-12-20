@@ -571,17 +571,14 @@
                 <button class="filter-tab" data-category="family">
                     <i class="fas fa-users"></i> Family
                 </button>
-                <button class="filter-tab" data-category="graduation">
-                    <i class="fas fa-graduation-cap"></i> Graduation
+                <button class="filter-tab" data-category="prewedding">
+                    <i class="fas fa-ring"></i> prewedding
                 </button>
-                <button class="filter-tab" data-category="maternity">
-                    <i class="fas fa-baby"></i> Maternity
+                <button class="filter-tab" data-category="babymaternity">
+                    <i class="fas fa-baby"></i> Baby&Maternity
                 </button>
-                <button class="filter-tab" data-category="portrait">
-                    <i class="fas fa-user"></i> Portrait
-                </button>
-                <button class="filter-tab" data-category="event">
-                    <i class="fas fa-calendar-alt"></i> Event
+                <button class="filter-tab" data-category="personal">
+                    <i class="fas fa-user"></i> Personal
                 </button>
                 <button class="filter-tab" data-category="other">
                     <i class="fas fa-ellipsis-h"></i> Lainnya
@@ -619,9 +616,9 @@
                 <span class="category-badge badge-{{ $gallery->category }}">
                     <i class="fas fa-{{ $gallery->category == 'wedding' ? 'ring' : 
                                       ($gallery->category == 'family' ? 'users' : 
-                                      ($gallery->category == 'graduation' ? 'graduation-cap' : 
-                                      ($gallery->category == 'maternity' ? 'baby' : 
-                                      ($gallery->category == 'portrait' ? 'user' : 
+                                      ($gallery->category == 'prewedding' ? 'ring' : 
+                                      ($gallery->category == 'babymaternity' ? 'baby' : 
+                                      ($gallery->category == 'personal' ? 'user' : 
                                       ($gallery->category == 'event' ? 'calendar-alt' : 'ellipsis-h'))))) }} mr-1"></i>
                     {{ ucfirst($gallery->category) }}
                 </span>

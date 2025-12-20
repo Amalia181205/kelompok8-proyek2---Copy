@@ -36,7 +36,7 @@ class GalleryController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
-            'category' => 'required|in:wedding,family,prewedding,baby&maternity,personal,other',
+            'category' => 'required|in:wedding,family,prewedding,babymaternity,personal,other',
             'sort_order' => 'nullable|integer',
             'is_active' => 'nullable|boolean'
         ]);
@@ -98,7 +98,7 @@ class GalleryController extends Controller
                 'title' => 'required|string|max:255',
              'description' => 'nullable|string',
              'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
-             'category' => 'required|in:wedding,family,prewedding,baby&maternity,personal,other',
+             'category' => 'required|in:wedding,family,prewedding,babymaternity,personal,other',
              'sort_order' => 'nullable|integer',
              'is_active' => 'nullable|boolean'
          ]);

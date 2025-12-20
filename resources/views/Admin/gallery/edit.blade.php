@@ -21,10 +21,10 @@
                         <input type="text" name="title" class="form-control" value="{{ $gallery->title }}" required>
                     </div>
 
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label>Deskripsi</label>
                         <textarea name="description" class="form-control" rows="3">{{ $gallery->description }}</textarea>
-                    </div>
+                    </div> --}}
 
                     <div class="form-group">
                         <br><label>Gambar Saat Ini</label><br>
@@ -44,7 +44,7 @@
                             <option value="wedding"     {{ $gallery->category == 'wedding' ? 'selected' : '' }}>Wedding</option>
                             <option value="family"      {{ $gallery->category == 'family' ? 'selected' : '' }}>Family</option>
                             <option value="prewedding"  {{ $gallery->category == 'prewedding' ? 'selected' : '' }}>Prewedding</option>
-                            <option value="baby&maternity"   {{ $gallery->category == 'baby&maternity' ? 'selected' : '' }}>Baby&Maternity</option>
+                            <option value="babymaternity"   {{ $gallery->category == 'babymaternity' ? 'selected' : '' }}>Baby&Maternity</option>
                             <option value="personal"    {{ $gallery->category == 'personal' ? 'selected' : '' }}>PersonalGallery</option>
                             {{-- <option value="event"       {{ $gallery->category == 'event' ? 'selected' : '' }}>Event</option> --}}
                             <option value="other"       {{ $gallery->category == 'other' ? 'selected' : '' }}>Other</option>

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('photo_count'); // jumlah foto
             $table->text('features'); // JSON atau text
             $table->string('image')->nullable();
-            $table->enum('category', ['wedding', 'family', 'graduation', 'maternity', 'other']);
+            $table->enum('category', ['wedding', 'family', 'prewedding', 'babymaternity', 'personal','other']);
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });

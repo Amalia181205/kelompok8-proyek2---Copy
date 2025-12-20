@@ -13,7 +13,7 @@ class GalleryUserController extends Controller
             ['slug' => 'personal', 'nama' => 'PERSONAL GALLERY', 'icon' => 'fa-solid fa-user'],
             ['slug' => 'family', 'nama' => 'FAMILY', 'icon' => 'fa-solid fa-users'],
             ['slug' => 'wedding', 'nama' => 'WEDDING', 'icon' => 'fa-solid fa-heart'],
-            ['slug' => 'baby', 'nama' => 'BABY & MATERNITY', 'icon' => 'fa-solid fa-baby-carriage'],
+            ['slug' => 'babymaternity', 'nama' => 'BABY & MATERNITY', 'icon' => 'fa-solid fa-baby-carriage'],
         ];
 
         return view('konten.gallery', [

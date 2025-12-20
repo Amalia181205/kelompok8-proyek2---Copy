@@ -13,7 +13,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->string('image');
-            $table->enum('category', ['wedding', 'family', 'graduation', 'maternity', 'portrait', 'event', 'other']);
+            $table->enum('category', ['wedding', 'family', 'prewedding', 'babymaternity', 'personal','other']);
             $table->boolean('is_active')->default(true);
             $table->integer('sort_order')->default(0);
             $table->timestamps();

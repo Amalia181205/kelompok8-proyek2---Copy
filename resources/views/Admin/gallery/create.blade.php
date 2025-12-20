@@ -20,10 +20,10 @@
                         <input type="text" name="title" class="form-control" required placeholder="Masukkan judul">
                     </div>
 
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label>Deskripsi</label>
                         <textarea name="description" class="form-control" rows="3"></textarea>
-                    </div>
+                    </div> --}}
 
                     <div class="form-group">
                         <label>Gambar</label>
@@ -35,9 +35,9 @@
                         <select name="category" class="form-control" required>
                             <option value="">-- Pilih Kategori --</option>
                             <option value="wedding">Wedding</option>
-                            <option value="family">Family</option>
+                            <option value="family">Familly</option>
                             <option value="prewedding">Prewedding</option>
-                            <option value="baby&maternity">Baby&Maternity</option>
+                            <option value="babymaternity">BabyMaternity</option>
                             <option value="personal">PersonalGallery</option>
                             {{-- <option value="event">Event</option> --}}
                             <option value="other">Other</option>

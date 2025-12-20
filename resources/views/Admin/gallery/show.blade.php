@@ -17,10 +17,10 @@
                     <p>{{ $gallery->title }}</p>
                 </div>
 
-                <div class="form-group">
+                {{-- <div class="form-group">
                     <label>Deskripsi:</label>
                     <p>{{ $gallery->description ?? '-' }}</p>
-                </div>
+                </div> --}}
 
                 <div class="form-group">
                     <label>Gambar:</label><br>
