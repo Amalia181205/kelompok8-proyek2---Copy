@@ -35,8 +35,7 @@
                         👤 {{ auth()->user()->name }}
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="/profile">Profile</a></li>
-                        <li><a class="dropdown-item" href="{{ url('/payment/history') }}">Riwayat Ahmed cekout bahan sus</a></li>
+                        <li><a class="dropdown-item" href="{{ url('/payment/history') }}">Riwayat </a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
                             <form method="POST" action="{{ url('/logout') }}" class="d-inline">
