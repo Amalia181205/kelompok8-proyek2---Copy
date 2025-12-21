@@ -3,7 +3,7 @@
 @section('content')
     <!-- Main Content -->
     <section class="content">
-        <div class="container-fluid">
+        <div class="container">
             <!-- Tab Navigation -->
             <ul class="nav nav-tabs mb-3" id="settingsTabs" role="tablist">
                 <li class="nav-item">
@@ -138,5 +138,4 @@
         });
     });
 </script>
-@endsection
 @endsection

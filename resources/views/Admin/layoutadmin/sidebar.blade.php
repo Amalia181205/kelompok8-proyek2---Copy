@@ -73,8 +73,8 @@
 
                 <!-- Settings -->
                 <li class="nav-item">
-                    <a href="/setting"
-                       class="nav-link {{ request()->is('setting*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.settings') }}"
+                       class="nav-link {{ request()->is('admin/setting*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-cog"></i>
                         <p>Settings</p>
                     </a>

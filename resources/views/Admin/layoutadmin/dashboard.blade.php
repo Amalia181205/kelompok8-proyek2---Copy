@@ -88,7 +88,50 @@
 </div>
 
 <!-- Small boxes (Stat box) -->
+
 <div class="row">
+    <div class="col-lg-3 col-6 mb-4">
+        <div class="small-box bg-info">
+            <div class="inner">
+                <h3>{{ $totalBooking }}</h3>
+                <p>Total Booking</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-calendar-check"></i>
+            </div>
+            <a href="{{ url('/admin/orders') }}" class="small-box-footer">Lihat semua booking <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-6 mb-4">
+        <div class="small-box bg-success">
+            <div class="inner">
+                <h3>{{ $todayBooking }}</h3>
+                <p>Booking Hari Ini</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-camera-retro"></i>
+            </div>
+            <a href="{{ url('/admin/orders/today') }}" class="small-box-footer">Lihat jadwal hari ini <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-6 mb-4">
+        <div class="small-box bg-danger">
+            <div class="inner">
+                <h3>{{ $pendingPayment }}</h3>
+                <p>Pembayaran Pending</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-money-bill-wave"></i>
+            </div>
+            <a href="{{ url('/admin/payments/pending') }}" class="small-box-footer">Cek pembayaran <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+</div>
+
+
+{{-- <div class="row">
     <div class="col-lg-3 col-6">
         <div class="small-box bg-info stat-card">
             <div class="inner">
@@ -152,7 +195,7 @@
             <a href="/admin/payments/pending" class="small-box-footer">Cek pembayaran <i class="fas fa-arrow-circle-right"></i></a>
         </div>
     </div>
-</div>
+</div> --}}
 
 <!-- Main row -->
 <div class="row">
@@ -247,56 +290,47 @@
     </section>
 
     <section class="col-lg-6 connectedSortable">
-        <!-- Pesan Pelanggan -->
-        <div class="card direct-chat direct-chat-primary chat-card">
-            <div class="card-header">
-                <h3 class="card-title">
-                    <i class="fas fa-comments mr-2"></i>
-                    Pesan Pelanggan Terbaru
-                </h3>
-                <div class="card-tools">
-                    <span class="badge badge-primary">3 Pesan Baru</span>
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                </div>
+    <div class="card direct-chat direct-chat-primary chat-card">
+        <div class="card-header">
+            <h3 class="card-title">
+                <i class="fas fa-comments mr-2"></i>
+                Pesan Pelanggan Terbaru
+            </h3>
+            <div class="card-tools">
+                <span class="badge badge-primary">{{ $messages->count() }} Pesan Baru</span>
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
             </div>
-            <div class="card-body">
-                <div class="direct-chat-messages">
+        </div>
+
+        <div class="card-body">
+            <div class="direct-chat-messages">
+                @foreach($messages as $msg)
                     <div class="direct-chat-msg">
                         <div class="direct-chat-infos clearfix">
-                            <span class="direct-chat-name float-left">Rina Pratiwi</span>
-                            <span class="direct-chat-timestamp float-right">13 Nov 09:20</span>
+                            <span class="direct-chat-name float-left">{{ $msg->name }}</span>
+                            <span class="direct-chat-timestamp float-right">{{ $msg->created_at->format('d M H:i') }}</span>
                         </div>
                         <img class="direct-chat-img" src="{{ asset('adminlte/adminlte/dist/img/user3-128x128.jpg') }}" alt="User Image">
                         <div class="direct-chat-text">
-                            Kak, bisa booking paket family untuk hari Minggu?
+                            {{ $msg->message }}
                         </div>
                     </div>
-
-                    <div class="direct-chat-msg right">
-                        <div class="direct-chat-infos clearfix">
-                            <span class="direct-chat-name float-right">Admin Studio</span>
-                            <span class="direct-chat-timestamp float-left">13 Nov 09:25</span>
-                        </div>
-                        <img class="direct-chat-img" src="{{ asset('adminlte/adminlte/dist/img/user1-128x128.jpg') }}" alt="Admin Image">
-                        <div class="direct-chat-text">
-                            Bisa kak, slot jam 10 masih tersedia ya 
-                        </div>
-                    </div>
-                    
-                </div>
-            </div>
-            <div class="card-footer">
-                <div class="input-group">
-                    <input type="text" name="message" placeholder="Type Message ..." class="form-control">
-                    <span class="input-group-append">
-                        <button type="button" class="btn btn-primary">Send</button>
-                    </span>
-                </div>
+                @endforeach
             </div>
         </div>
-    </section>
+
+        {{-- <div class="card-footer">
+            <div class="input-group">
+                <input type="text" name="message" placeholder="Type Message ..." class="form-control" disabled>
+                <span class="input-group-append">
+                    <button type="button" class="btn btn-primary" disabled>Send</button>
+                </span>
+            </div>
+        </div> --}}
+    </div>
+</section>
 </div>
 
 <!-- Row: Admin Profile -->

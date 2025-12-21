@@ -83,14 +83,8 @@ Route::middleware('auth:admin')
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::get('/orders', [OrdersController::class, 'index'])->name('orders');
 
-        Route::get('/setting', function () {
-            $title = 'Setting';
-            $slug = 'setting';
-            $users = \App\Models\User::all();
-            $admins = \App\Models\Admin::all();
-            return view('Admin.layoutadmin.setting', compact('title', 'slug', 'users', 'admins'));
-        })->name('settings');
-
+        Route::get('/setting', [SettingController::class, 'index'])->name('settings');
+        
         // Packages
         Route::resource('packages', PackageController::class);
         Route::put('/packages/{package}/toggle-status',
