@@ -22,6 +22,11 @@ class Booking extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function paymentConfirmation()
+    {
+        return $this->hasOne(PaymentConfirmation::class);
+    }
+
     // Helper to check if a user has booked a package
     public static function userHasBooked($userId, $packageName)
     {

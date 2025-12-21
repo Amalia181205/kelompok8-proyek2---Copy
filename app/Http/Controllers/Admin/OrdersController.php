@@ -4,15 +4,16 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use App\Models\PaymentConfirmation;
+
 
 class OrdersController extends Controller
 {
+    
     public function index()
     {
-        $orders = Order::all();
-        $slug = 'orders';
-        $title = 'orders';
-        return view('admin.layoutadmin.orders', compact('orders','slug','title'));
+        $orders = PaymentConfirmation::with('booking')->latest()->get();
+        return view('admin.layoutadmin.orders', compact('orders'));
     }
 
     public function store(Request $request)
