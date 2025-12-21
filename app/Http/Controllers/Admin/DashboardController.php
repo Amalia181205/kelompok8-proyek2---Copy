@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Contact;
 use App\Models\Order;
-use App\Models\Buyer;
 use App\Models\PaymentConfirmation;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -17,47 +16,32 @@ class DashboardController extends Controller
     public function index()
     {
         $title = 'Admin Dashboard';
-        $slug = 'dashboard';
+        $slug  = 'dashboard';
 
-        // Ambil semua pesan dari kontak terbaru
-        $messages = Contact::orderBy('created_at', 'desc')->get();
+        // Pesan pelanggan terbaru
+        $messages = Contact::orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
 
-        // Statistik untuk small boxes
-        $totalBooking   = Order::count(); // Total semua booking
-        $todayBooking   = Order::whereDate('created_at', now())->count(); // Booking hari ini
-        $pendingPayment = PaymentConfirmation::where('status', 'pending')->count(); // Pembayaran pending
+        // Statistik box
+        $totalBooking   = Order::count();
+        $todayBooking   = Order::whereDate('created_at', Carbon::today())->count();
+        $pendingPayment = PaymentConfirmation::where('status', 'pending')->count();
 
-        // Kirim semua data ke view
+        // 🔥 INI YANG SEBELUMNYA BIKIN ERROR
+        $recentOrders = Order::with('user')
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
+
         return view('Admin.layoutadmin.dashboard', compact(
             'title',
             'slug',
-            'messages',        
+            'messages',
             'totalBooking',
             'todayBooking',
-            'pendingPayment'
+            'pendingPayment',
+            'recentOrders'
         ));
     }
 }
-
-//namespace App\Http\Controllers\Admin;
-
-// use App\Http\Controllers\Controller;
-// use Illuminate\Http\Request;
-// use App\Models\Contact;
-
-// class DashboardController extends Controller
-// {
-//     /**
-//      * Show admin dashboard
-//      */
-//     public function index()
-//     {
-//         $title = 'Admin Dashboard';
-//         $slug = 'dashboard';
-
-//         // Ambil semua pesan dari kontak
-//     $messages = Contact::orderBy('created_at', 'desc')->get();
-
-//         return view('Admin.layoutadmin.dashboard', compact('title', 'slug', 'messages'));
-//     }
-// } 

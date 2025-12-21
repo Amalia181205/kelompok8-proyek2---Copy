@@ -9,6 +9,8 @@ class Order extends Model
 {
     use HasFactory;
 
+    protected $table = 'bookings'; 
+
     protected $fillable = [
         'booking_id',
         'total_price',

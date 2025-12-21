@@ -12,6 +12,30 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\GalleryUserController;
+use App\Http\Controllers\Admin\ScheduleController;
+
+use App\Http\Controllers\Admin\PaymentCheckController;
+
+Route::middleware('auth:admin')
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+
+        Route::get('/cek-pembayaran', [PaymentCheckController::class, 'index'])
+            ->name('payment.index');
+    });
+
+Route::middleware('auth:admin')
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+
+        Route::get('/jadwal-booking', [ScheduleController::class, 'index'])
+            ->name('schedule.index');
+
+    });
+
+
 
 /*
 |--------------------------------------------------------------------------
