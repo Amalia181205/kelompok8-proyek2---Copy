@@ -78,7 +78,7 @@ class PaymentController extends Controller
         'metode' => 'Midtrans',
         'status' => 'pending',
         'gross_amount' => $amount,
-        'user_id' => Auth::id(),
+        // 'user_id' => Auth::id(),
     ]);
 
     // Buat parameter untuk Snap
@@ -277,13 +277,25 @@ class PaymentController extends Controller
         };
     }
 
-    public function history()
+   public function history()
     {
-        $payments = PaymentConfirmation::where('user_id', Auth::id())
-            ->with('booking')
-            ->latest()
-            ->get();
+    $payments = PaymentConfirmation::whereHas('booking', function ($query) {
+            $query->where('user_id', Auth::id());
+        })
+        ->with('booking')
+        ->latest()
+        ->get();
 
-        return view('payment.history_pembayaran', compact('payments'));
+    return view('payment.history_pembayaran', compact('payments'));
     }
+
+
+    public function receipt(PaymentConfirmation $payment)
+    {
+    // Pastikan user hanya bisa akses payment miliknya
+    abort_if($payment->booking->user_id !== Auth::id(), 403);
+    
+    return view('payment.receipt', compact('payment'));
+    }
+
 }

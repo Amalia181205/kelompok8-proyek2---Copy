@@ -5,7 +5,6 @@
 @section('content')
 
 <div class="container my-5">
-
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h3 class="fw-bold text-primary m-0">
             <i class="bi bi-receipt"></i> Riwayat Transaksi
@@ -49,7 +48,8 @@
                                     <td>#{{ $p->booking->id }}</td>
                                     <td>{{ ucfirst($p->booking->package_name) }}</td>
                                     <td class="fw-bold text-success">
-                                        Rp {{ number_format($p->amount ?? 0, 0, ',', '.') }}
+                                        {{-- PERBAIKAN DI SINI: gunakan gross_amount bukan amount --}}
+                                        Rp {{ number_format($p->gross_amount, 0, ',', '.') }}
                                     </td>
                                     <td>{{ strtoupper($p->metode ?? '-') }}</td>
                                     <td>
@@ -60,8 +60,9 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <a href="{{ route('payment.menu', ['booking' => $p->booking->id]) }}"
-                                           class="btn btn-sm btn-outline-primary">
+                                        <a href="{{ route('payment.receipt', $p->id) }}" 
+                                        class="btn btn-sm btn-outline-primary"
+                                        target="_blank">
                                             <i class="bi bi-eye"></i> Detail
                                         </a>
                                     </td>
@@ -71,7 +72,6 @@
                     </table>
                 </div>
             @endif
-
         </div>
     </div>
 </div>

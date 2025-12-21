@@ -123,10 +123,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/user/dashboard', function () {
         $title = 'User Dashboard';
         $slug = 'dashboard';
-        return view('user.dashboard', compact('title', 'slug'));
+        return view('konten.home', compact('title', 'slug'));
     })->name('user.dashboard');
 
     // ✅ PAYMENT ROUTES - PERBAIKI PARAMETER
+
+    Route::get('/payment/receipt/{payment}', [PaymentController::class, 'receipt'])
+    ->name('payment.receipt')
+    ->middleware('auth');
+    
     Route::get('/payment/{booking}/menu', [PaymentController::class, 'menu'])
         ->name('payment.menu');
 
@@ -144,6 +149,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/payment/history', [PaymentController::class, 'history'])
         ->name('payment.history');
+
+    
 });
 
 // ✅ MIDTRANS CALLBACK - PASTIKAN INI SATU-SATUNYA
