@@ -63,13 +63,13 @@
                 </li>
 
                 <!-- Buyers -->
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a href="/buyers"
                        class="nav-link {{ request()->is('buyers*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-users"></i>
                         <p>Buyers</p>
                     </a>
-                </li>
+                </li> -->
 
                 <!-- Settings -->
                 <li class="nav-item">
