@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\ScheduleController;
 
 use App\Http\Controllers\Admin\PaymentCheckController;
 
+
 Route::middleware('auth:admin')
     ->prefix('admin')
     ->name('admin.')
@@ -106,7 +107,7 @@ Route::middleware('auth:admin')
 
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::get('/orders', [OrdersController::class, 'index'])->name('orders');
-
+        //setting
         Route::get('/setting', [SettingController::class, 'index'])->name('settings');
         
         // Packages

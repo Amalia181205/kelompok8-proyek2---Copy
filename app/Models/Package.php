@@ -1,10 +1,13 @@
 <?php
 
+/// app/Models/Package.php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+//create paket 
 class Package extends Model
 {
     use HasFactory;
@@ -26,4 +29,5 @@ class Package extends Model
         'is_active' => 'boolean',
         'price' => 'decimal:2'
     ];
+
 }
