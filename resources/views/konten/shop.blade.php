@@ -1,118 +1,165 @@
 @extends('bagianAwal.main')
 
-@section('title', 'Shop - FotoStudio')
+@section('title', 'Shop - fanesya.Com')
 
 @section('content')
 <div class="container my-5">
-    <h1 class="text-center mb-4">Paket Foto Studio</h1>
-    
-    @if(isset($hasDatabaseData) && $hasDatabaseData)
-        <p class="text-center text-success mb-5">
-            <i class="fas fa-check-circle"></i> Menampilkan paket premium dari database
-        </p>
-    @else
-        <p class="text-center text-info mb-5">
-            <i class="fas fa-info-circle"></i> Menampilkan paket standar kami
-        </p>
-    @endif
+    <h2 class="text-center mb-5" style="color: #1eaae9; font-weight: 600;">
+        Pilih paket untuk menciptakan momen indah Anda
+    </h2>
 
-    @if(count($packages) > 0)
-    <div class="row">
-        @foreach($packages as $key => $package)
-        <div class="col-md-6 col-lg-4 col-xl-3 mb-4">
-            <div class="card h-100 shadow-sm border-0">
-                
-                <!-- Badge -->
-                @if(isset($package['is_dummy']) && $package['is_dummy'])
-                <span class="position-absolute top-0 start-0 m-2 badge bg-info">Standard</span>
-                @else
-                <span class="position-absolute top-0 start-0 m-2 badge bg-success">Premium</span>
-                @endif
-
-                <!-- Gambar -->
-                <div class="card-img-top" style="height: 200px; overflow: hidden;">
-                    <img src="{{ $package['image'] }}" 
-                         alt="{{ $package['title'] }}" 
-                         class="w-100 h-100 object-fit-cover"
-                         onerror="this.src='{{ asset('png/default.jpg') }}'">
+    <div class="row g-4">
+       
+        <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+            <div class="card product-card h-100 border-0 rounded-4 text-center">
+                <div class="product-image">
+                    <img src="{{ asset('png/fotoSingle FOTU.jpg') }}" class="img-fluid" alt="Personal">
                 </div>
-
-                <!-- Card Body -->
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-title">{{ $package['title'] }}</h5>
-                    
-                    <!-- Info Tambahan -->
-                    @if(isset($package['duration']) || isset($package['photo_count']))
-                    <div class="mb-2 small text-muted">
-                        @if(isset($package['duration']))
-                        <span><i class="fas fa-clock"></i> {{ $package['duration'] }} jam</span>
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Personal Gallery</h5>
+                        @if(auth()->check() && auth()->user()->hasBooked('Personal Gallery'))
+                            <button class="btn btn-secondary" disabled>Booked</button>
+                        @else
+                            <a href="{{ route('booking.show', 'personal') }}" class="btn btn-menu-detail">BookNow</a>
                         @endif
-                        @if(isset($package['photo_count']))
-                        <span class="ms-2"><i class="fas fa-camera"></i> {{ $package['photo_count'] }} foto</span>
-                        @endif
-                    </div>
-                    @endif
-                    
-                    <!-- Deskripsi -->
-                    <p class="card-text text-muted small mb-3" style="min-height: 40px;">
-                        {{ Str::limit(strip_tags($package['description']), 80) }}
-                    </p>
-                    
-                    <!-- Harga -->
-                    <div class="mt-auto">
-                        <h4 class="text-primary">{{ $package['price'] }}</h4>
-                        
-                        <!-- Tombol -->
-                        <div class="d-grid mt-3">
-                            @if(isset($package['is_dummy']) && $package['is_dummy'])
-                            <a href="{{ route('booking.show-static', str_replace('dummy_', '', $key)) }}" 
-                               class="btn btn-primary btn-sm">
-                                <i class="fas fa-calendar-plus me-1"></i> Booking
-                            </a>
-                            @else
-                            <a href="{{ route('booking.package', $package['db_id'] ?? 0) }}" 
-                               class="btn btn-success btn-sm">
-                                <i class="fas fa-star me-1"></i> Booking Premium
-                            </a>
-                            @endif
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
-        @endforeach
-    </div>
-    @else
-    <div class="text-center py-5">
-        <div class="alert alert-warning">
-            <i class="fas fa-exclamation-triangle fa-2x mb-3"></i>
-            <h4>Data tidak ditemukan</h4>
-            <p class="mb-0">Silakan hubungi admin untuk informasi lebih lanjut.</p>
+
+        <!-- Family -->
+        <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+            <div class="card product-card h-100 border-0 rounded-4 text-center">
+                <div class="product-image">
+                    <img src="{{ asset('png/PaketKeluarga.jpg') }}" class="img-fluid" alt="Family">
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Family</h5>
+                        @if(auth()->check() && auth()->user()->hasBooked('Family'))
+                            <button class="btn btn-secondary" disabled>Booked</button>
+                        @else
+                            <a href="{{ route('booking.show', 'family') }}" class="btn btn-menu-detail">BookNow</a>
+                        @endif
+                </div>
+            </div>
+        </div>
+
+        <!-- Maternity -->
+        <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+            <div class="card product-card h-100 border-0 rounded-4 text-center">
+                <div class="product-image">
+                    <img src="{{ asset('png/PaketBayi.jpg') }}" class="img-fluid" alt="Maternity">
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Maternity & Baby</h5>
+                        @if(auth()->check() && auth()->user()->hasBooked('Maternity & Baby'))
+                            <button class="btn btn-secondary" disabled>Booked</button>
+                        @else
+                            <a href="{{ route('booking.show', 'maternity') }}" class="btn btn-menu-detail">BookNow</a>
+                        @endif
+                </div>
+            </div>
+        </div>
+
+        <!-- Prewedding -->
+        <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+            <div class="card product-card h-100 border-0 rounded-4 text-center">
+                <div class="product-image">
+                    <img src="{{ asset('png/PaketPengantin.jpg') }}" class="img-fluid" alt="Prewedding">
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Prewedding</h5>
+                        @if(auth()->check() && auth()->user()->hasBooked('Prewedding'))
+                            <button class="btn btn-secondary" disabled>Booked</button>
+                        @else
+                            <a href="{{ route('booking.show', 'prewedding') }}" class="btn btn-menu-detail">BookNow</a>
+                        @endif
+                </div>
+            </div>
         </div>
     </div>
-    @endif
-    
-    <!-- Debug Info (Hapus di production) -->
-    @if(app()->environment('local'))
-    <div class="mt-5 p-3 bg-light rounded">
-        <h6>Debug Info:</h6>
-        <p>Jumlah paket: {{ count($packages) }}</p>
-        <p>Has DB Data: {{ $hasDatabaseData ? 'Ya' : 'Tidak' }}</p>
-    </div>
-    @endif
+
 </div>
 
 <style>
-    .card {
-        transition: all 0.3s ease;
+    /* Product card visual style */
+    .product-card {
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 6px 18px rgba(22,35,50,0.06);
+        transition: transform 0.35s ease, box-shadow 0.35s ease;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
-    .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+
+    .product-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 20px 40px rgba(14,76,124,0.08);
     }
-    .badge {
-        font-size: 0.7rem;
-        padding: 4px 8px;
+
+    .product-image {
+        height: 220px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f8fafc;
+    }
+
+    .product-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.45s ease;
+    }
+
+    .product-card:hover .product-image img {
+        transform: scale(1.05);
+    }
+
+    .card-body { padding: 1.25rem; }
+
+    .card-title { color: #333; font-weight: 600; }
+
+    /* Menu Detail button style */
+    .btn-menu-detail {
+        display: inline-block;
+        background-color: #00aaff;
+        color: #fff;
+        padding: 10px 26px;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+        border: none;
+    }
+
+    .btn-menu-detail:hover {
+        background-color: #0088cc;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(0,136,204,0.12);
+        color: #fff;
+    }
+
+    .btn-see-all {
+        background-color: #00aaff;
+        color: #fff;
+        padding: 12px 36px;
+        border-radius: 30px;
+        font-weight: 700;
+        display: inline-block;
+        border: none;
+    }
+
+    .btn-see-all:hover {
+        background-color: #0088cc;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(0,136,204,0.12);
+    }
+
+    @media (max-width: 576px) {
+        .product-image { height: 180px; }
     }
 </style>
 @endsection
