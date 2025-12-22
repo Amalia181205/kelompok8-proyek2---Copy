@@ -9,7 +9,7 @@
     </h2>
 
     <div class="row g-4">
-        <!-- Personal -->
+        <<-- personal -->>
         <div class="col-12 col-sm-6 col-md-6 col-lg-3">
             <div class="card product-card h-100 border-0 rounded-4 text-center">
                 <div class="product-image">

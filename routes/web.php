@@ -106,7 +106,7 @@ Route::middleware('auth:admin')
 
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::get('/orders', [OrdersController::class, 'index'])->name('orders');
-
+        //setting
         Route::get('/setting', [SettingController::class, 'index'])->name('settings');
         
         // Packages
